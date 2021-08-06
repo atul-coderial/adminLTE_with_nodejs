@@ -26,8 +26,11 @@
   },
   "homepage": "https://github.com/atul-coderial/adminLTE_with_nodejs#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.5",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "express-ejs-layouts": "^2.5.1"
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.17.2",
+    "mysql": "^2.18.1"
   }
 }

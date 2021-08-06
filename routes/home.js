@@ -9,5 +9,5 @@ router.get("/add_user", homeController.addUser);
 router.get("/userList", homeController.userList);
 router.get("/admin", homeController.adminReg);
 router.get("/adminsignIn", homeController.adminSign);
-
+router.post("/adminSignUp", homeController.createAdmin);
 module.exports = router;
