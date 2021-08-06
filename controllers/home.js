@@ -54,4 +54,64 @@ module.exports.adminSign = function (req, res) {
 };
 
 //Create Admin account
-module.exports.createAdmin = function (req, res) {};
+module.exports.createAdmin = function (req, res) {
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
+  const confirm_password = req.body.confirm_password;
+  const terms = req.body.terms;
+
+  const findQuery = "SELECT `email` FROM `admin` WHERE `email` = ?";
+  const queryFormate = mysql.format(findQuery, [email]);
+  db.query(queryFormate, function (err, data) {
+    if (data.length === 0) {
+      //check password
+      if (password != confirm_password) {
+        console.log("Password is not matched with confirmed_password");
+        return res.redirect("back");
+      }
+      //Create new admin
+      const queryInsert =
+        "INSERT INTO `admin` (`name`, `email`, `password`, `terms`) VALUES (?, ?, ?, ?)";
+      const queryFormat = mysql.format(queryInsert, [
+        name,
+        email,
+        password,
+        terms,
+      ]);
+      db.query(queryFormat, function (err) {
+        if (err) {
+          console.log("Error to create a new admin");
+          return;
+        }
+        console.log("New Admin account is created");
+        return res.redirect("/adminsignIn");
+      });
+    } else {
+      console.log("Email alread exist", data);
+      return res.redirect("back");
+    }
+  });
+};
+
+//Create a Admin session
+module.exports.createAdminSession = function (req, res) {
+  const email = req.body.email;
+  const password = req.body.password;
+  const queryFind =
+    "SELECT * FROM `admin` WHERE (`email` = ? AND `password` = ?)";
+  const queryFormate = mysql.format(queryFind, [email, password]);
+  db.query(queryFormate, function (error, data) {
+    if (error) throw error;
+    if (data) {
+      const string = JSON.stringify(data);
+      const records = JSON.parse(string);
+      records.forEach((element) => {
+        id = element.id;
+        //handle session cookie
+        res.cookie("user_id", id);
+      });
+      return res.redirect("/");
+    }
+  });
+};
