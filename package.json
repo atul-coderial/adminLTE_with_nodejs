@@ -1,0 +1,32 @@
+{
+  "name": "adminlte",
+  "version": "1.0.0",
+  "description": "customize adminLTE with nodejs and express",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atul-coderial/adminLTE_with_nodejs.git"
+  },
+  "keywords": [
+    "adminLTE",
+    "mysql",
+    "database",
+    "nodejs",
+    "express",
+    "express-layouts"
+  ],
+  "author": "atul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atul-coderial/adminLTE_with_nodejs/issues"
+  },
+  "homepage": "https://github.com/atul-coderial/adminLTE_with_nodejs#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  }
+}
