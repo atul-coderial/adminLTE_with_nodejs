@@ -23,9 +23,11 @@
             alt="User Image"
           />
         </div>
+        <% adminU.forEach(function(row){ %>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block"><%= row.name %></a>
         </div>
+        <% }) %>
       </div>
 
       <!-- SidebarSearch Form -->
@@ -56,7 +58,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+            <a href="/" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -181,23 +183,28 @@
               </tr>
             </thead>
             <tbody>
+              <% if(records){%> <% records.forEach(function(row){ %>
               <tr>
                 <td>#</td>
-                <td>Atul</td>
-                <td>atul@gmail.com</td>
-                <td>B</td>
-                <td>283322888</td>
+                <td><%= row.name %></td>
+                <td><%= row.email %></td>
+                <td><%= row.bloodgrp %></td>
+                <td><%= row.phone %></td>
                 <td class="project-actions text-right">
-                  <a class="btn btn-info btn-sm" href="#">
+                  <a class="btn btn-info btn-sm" href="/edit/<%= row.id %>">
                     <i class="fas fa-pencil-alt"> </i>
                     Edit
                   </a>
-                  <a class="btn btn-danger btn-sm" href="#">
+                  <a class="btn btn-danger btn-sm" href="/delete/<%= row.id %>">
                     <i class="fas fa-trash"> </i>
                     Delete
                   </a>
                 </td>
               </tr>
+
+              <%}) %> <%} else {%>
+              <p>No records of users</p>
+              <%} %>
             </tbody>
           </table>
         </div>

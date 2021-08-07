@@ -11,4 +11,5 @@ router.get("/admin", homeController.adminReg);
 router.get("/adminsignIn", homeController.adminSign);
 router.post("/adminSignUp", homeController.createAdmin);
 router.post("/createSession", homeController.createAdminSession);
+router.get("/logout", homeController.destroy);
 module.exports = router;

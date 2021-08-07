@@ -7,8 +7,25 @@ module.exports.home = function (req, res) {
   if (!req.cookies.user_id) {
     return res.redirect("/admin");
   }
-  return res.render("home", {
-    title: "AdminLTE",
+  const queryFindU = "SELECT * FROM `admin` WHERE `id` = ?";
+  const queryF = mysql.format(queryFindU, [req.cookies.user_id]);
+  db.query(queryF, function (err, data) {
+    if (err) throw err;
+    const queryFindR = "SELECT COUNT(*) AS TOTAL FROM `users`";
+    const queryForR = mysql.format(queryFindR);
+    db.query(queryForR, function (err, val) {
+      const string = JSON.stringify(val);
+      const records = JSON.parse(string);
+      if (err) {
+        console.log("Error to count the rows");
+        return;
+      }
+      return res.render("home", {
+        title: "AdminLTE",
+        adminU: data,
+        records: records,
+      });
+    });
   });
 };
 
@@ -17,8 +34,13 @@ module.exports.addUser = function (req, res) {
   if (!req.cookies.user_id) {
     return res.redirect("/adminsignIn");
   }
-  return res.render("add_user", {
-    title: "Add New User",
+  const queryFindU = "SELECT * FROM `admin` WHERE `id` = ?";
+  const queryF = mysql.format(queryFindU, [req.cookies.user_id]);
+  db.query(queryF, function (err, data) {
+    return res.render("add_user", {
+      title: "Add New User",
+      adminU: data,
+    });
   });
 };
 
@@ -27,9 +49,22 @@ module.exports.userList = function (req, res) {
   if (!req.cookies.user_id) {
     return res.redirect("/adminsignIn");
   }
-
-  return res.render("users", {
-    title: "User List",
+  const queryFindU = "SELECT * FROM `admin` WHERE `id` = ?";
+  const queryF = mysql.format(queryFindU, [req.cookies.user_id]);
+  db.query(queryF, function (err, val) {
+    const queryFindUser = "SELECT * FROM `users` ORDER BY `id` DESC";
+    const userFormate = mysql.format(queryFindUser);
+    db.query(userFormate, function (err, data) {
+      const string = JSON.stringify(data);
+      const records = JSON.parse(string);
+      console.log("users", records);
+      if (err) throw err;
+      return res.render("users", {
+        title: "User List",
+        records: records,
+        adminU: val,
+      });
+    });
   });
 };
 
@@ -114,4 +149,10 @@ module.exports.createAdminSession = function (req, res) {
       return res.redirect("/");
     }
   });
+};
+
+//destroy session
+module.exports.destroy = function (req, res) {
+  res.clearCookie("user_id");
+  return res.redirect("/adminsignIn");
 };
